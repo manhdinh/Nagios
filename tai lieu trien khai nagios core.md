@@ -11,7 +11,7 @@ kỹ thuật Rsync, cung cấp cơ chế làm việc giữa máy Primary và Sec
 List server 
 
 |STT|Tên|IP|OS|
-|-------|-----------------|------------------|-----------|
+|-------|---------------|--------------|---------|
 |1|Nagios-server|172.16.69.221|Centos 7|
 |2|Nagios-backup|172.16.69.223|Centos 7|
 
