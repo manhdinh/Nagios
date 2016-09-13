@@ -157,6 +157,7 @@ Tìm và chỉnh sửa như sau :
 ```sh
 allowed_hosts=127.0.0.1, 172.16.69.221
 ```
+**Chú ý** :  Thay IP 172.16.69.221 với Nagios server IP của bạn 
 
 **Bước 4** : Khởi động Nagios NRPE
 
@@ -181,13 +182,18 @@ Tìm và chỉnh sửa như sau :
 ```sh
 allowed_hosts=127.0.0.1, 172.16.69.221
 ```
+**Chú ý** :  Thay IP 172.16.69.221 với Nagios server IP của bạn 
+
 **Bước 4** : Khởi động Nagios NRPE
 
 ```sh
 /etc/init.d/nagios-nrpe-server restart
 ```
 
-####Trên máy Nagios Server
+**Chú ý ** : Sau khi cài đặt xong tại phía client, quay lại Nagios-Server và tiếp tục mục **3** để tạo file cấu hình cho các host client vừa thêm.
+
+##3 Cấu hình cho host client
+###3.1 Tạo cấu hình cho host client
 
 Chỉnh file cấu hình của Nagios, đặt tất cả các file cấu hình của host client là server vào cùng 1 thư mục :
 
@@ -199,7 +205,7 @@ Tìm và bỏ dấu "#" ở trước dòng sau :
 ```sh
 cfg_dir=/usr/local/nagios/etc/servers
 ```
-Tạo thư mục chứa các file cấu hình và tạo file cấu hình cho client :
+Tạo thư mục chứa các file cấu hình và tạo file cấu hình cho client, ví dụ ở đây client có hostname là zabbix : 
 
 ```sh
 mkdir /usr/local/nagios/etc/servers
@@ -225,7 +231,7 @@ systemctl restart nagios
 ```
 ![nagios](/images/nagios03.png)
 
-Tiếp tục định nghĩa service dành cho host client 
+###3.2 Cấu hình cho service SSH 
 ```sh
 vi /usr/local/nagios/etc/servers/zabbix.cfg
 
