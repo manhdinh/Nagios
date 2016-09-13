@@ -1,11 +1,13 @@
 #I.	Mô hình Logical
 Mô hình triển khai Nagios Core High Avaibility
 ![nagios](/images/nagios01.png)
+
 Trong mô hình này, hệ thống sẽ gồm 2 máy Nagios Core server, 1 máy đóng vai trò Primary, 1 máy đóng vai trò Secondary làm backup. Mô hình sử dụng 
 kỹ thuật Rsync, cung cấp cơ chế làm việc giữa máy Primary và Secondary. Khi hệ thống hoạt động bình thường, máy Primary sẽ tiếp nhận toàn nhận công
  việc của 1 máy Nagios Core server. Tuy nhiên, khi máy Primary gặp sự cố, thông qua cơ chế Rsync, máy Sendondary trong thời gian ngắn nhất sẽ lên 
  thay thế vai trò của máy Primary. Khi sự cố được khắc phục, máy Primary sẽ đảm nhận lại vai tro cũ. Mô hình này đảm bảo việc khi có sự cố xảy ra,
  việc monitor hệ thống sẽ không bị gián đoạn quá lâu. 
+ 
 #II. Triển khai Nagios 
 ##1 Chuẩn bị
 ###1.1 Mô hình mạng
@@ -26,14 +28,17 @@ kỹ thuật Rsync, cung cấp cơ chế làm việc giữa máy Primary và Sec
 |100|500|4-8GB|2-4 Core|80GB|
 |>500|2500|>8GB|>4 Core|120GB|
 
-####2. Cài đặt Nagios
+##2. Cài đặt Nagios
+###2.1 Cài đặt phía Server
+####2.1.1 Cài đặt Nagios Primary
 
-**Tại máy Nagios Primary**
 **Bước 1** : Tắt Selinux
+
 ```sh
 setenforce 0
 ```
 Sửa file `/etc/selinux/config` và chuyển `enforcing` thành `disabled`
+
 **Bước 2** : Cài đặt các gói điều kiện
 Cài các gói cần thiết :
 ```sh
@@ -98,7 +103,7 @@ service nagios start
 
 ![nagios](/images/nagios02.png)
 
-###3. Hướng dẫn cài đặt Nagios client sử dụng NRPE
+##2.2. Hướng dẫn cài đặt Nagios client sử dụng NRPE
 
 ####Trên Centos Client : 
 
