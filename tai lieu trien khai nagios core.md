@@ -1,4 +1,4 @@
-##I.	Mô hình triển khai dự kiến 
+##I.	Mô hình Logical
 Mô hình triển khai Nagios Core High Avaibility
 ![nagios](/images/nagios01.png)
 Trong mô hình này, hệ thống sẽ gồm 2 máy Nagios Core server, 1 máy đóng vai trò Primary, 1 máy đóng vai trò Secondary làm backup. Mô hình sử dụng 
@@ -6,16 +6,19 @@ kỹ thuật Rsync, cung cấp cơ chế làm việc giữa máy Primary và Sec
  việc của 1 máy Nagios Core server. Tuy nhiên, khi máy Primary gặp sự cố, thông qua cơ chế Rsync, máy Sendondary trong thời gian ngắn nhất sẽ lên 
  thay thế vai trò của máy Primary. Khi sự cố được khắc phục, máy Primary sẽ đảm nhận lại vai tro cũ. Mô hình này đảm bảo việc khi có sự cố xảy ra,
  việc monitor hệ thống sẽ không bị gián đoạn quá lâu. 
-##II. Triển khai Nagios Core
-###1 Cấu hình khuyến cáo
-List server 
+##II. Triển khai Nagios 
+###1 Chuẩn bị
+<ul> Mô hình mạng </ul>
+![nagios](/images/nagios06.png)
+
+<ul>Danh sách server </ul>
 
 |STT|Tên|IP|OS|
 |-------|---------------|--------------|---------|
 |1|Nagios-server|172.16.69.221|Centos 7|
 |2|Nagios-backup|172.16.69.223|Centos 7|
 
-Cấu hình phần cứng yêu cầu :
+<ul>Cấu hình phần cứng yêu cầu :</ul>
 
 |Số lượng host giám sát|Số lượng service giám sát|RAM|CPU|Disk|
 |----------------------|-------------------------|---|---|----|
