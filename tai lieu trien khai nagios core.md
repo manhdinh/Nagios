@@ -129,9 +129,9 @@ vi /etc/nagios/nrpe.cfg
 Tìm và chỉnh sửa như sau :
 
 ```sh
-allowed_hosts=127.0.0.1, 10.0.0.20
+allowed_hosts=127.0.0.1, 172.16.69.221
 ```
-*Chú ý :  Thay IP 10.0.0.20 với Nagios server IP của bạn 
+*Chú ý :  Thay IP 172.16.69.221 với Nagios server IP của bạn 
 
 Khởi động Nagios NRPE
 
@@ -177,7 +177,7 @@ define host{
 use                             linux-server
 host_name                       zabbix			#hostname của host client
 alias                           zabbix			#bí danh của host client
-address                         192.168.1.152	#IP của host client
+address                         172.16.69.221	#IP của host client
 max_check_attempts              5
 check_period                    24x7
 notification_interval           30
@@ -211,4 +211,13 @@ define service {
         check_command                   check_ssh
         notifications_enabled           0
         }
+define service {
+        use                             generic-service
+        host_name                       zabbix
+        service_description             PING2
+        check_command                   check-host-alive
+        notifications_enabled           0
+        }
 ```
+
+![nagios](/images/nagios04.png)
