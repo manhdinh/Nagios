@@ -168,15 +168,15 @@ Tạo thư mục chứa các file cấu hình và tạo file cấu hình cho cli
 
 ```sh
 mkdir /usr/local/nagios/etc/servers
-vi /usr/local/nagios/etc/servers/clients.cfg
+vi /usr/local/nagios/etc/servers/zabbix.cfg
 ```
 Định nghĩa host client với các thông tin sau
 
 ```sh
 define host{
 use                             linux-server
-host_name                       client			#hostname của host client
-alias                           client			#bí danh của host client
+host_name                       zabbix			#hostname của host client
+alias                           zabbix			#bí danh của host client
 address                         192.168.1.152	#IP của host client
 max_check_attempts              5
 check_period                    24x7
@@ -187,4 +187,28 @@ notification_period             24x7
 Restart service và vào giao diện Web kiểm tra
 ```sh
 systemctl restart nagios
+```
+![nagios](/images/nagios03.png)
+
+Tiếp tục định nghĩa service dành cho host client 
+```sh
+vi /usr/local/nagios/etc/servers/zabbix.cfg
+
+define host{
+		use                             linux-server
+		host_name                       zabbix			#hostname của host client
+		alias                           zabbix			#bí danh của host client
+		address                         192.168.1.152	#IP của host client
+		max_check_attempts              5
+		check_period                    24x7
+		notification_interval           30
+		notification_period             24x7
+}
+define service {
+        use                             generic-service
+        host_name                       zabbix
+        service_description             SSH
+        check_command                   check_ssh
+        notifications_enabled           0
+        }
 ```
