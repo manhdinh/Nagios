@@ -190,7 +190,7 @@ allowed_hosts=127.0.0.1, 172.16.69.221
 /etc/init.d/nagios-nrpe-server restart
 ```
 
-**Chú ý ** : Sau khi cài đặt xong tại phía client, quay lại Nagios-Server và tiếp tục mục **3** để tạo file cấu hình cho các host client vừa thêm.
+**Chú ý** : Sau khi cài đặt xong tại phía client, quay lại Nagios-Server và tiếp tục mục **3** để tạo file cấu hình cho các host client vừa thêm.
 
 ##3 Cấu hình cho host client
 ###3.1 Tạo cấu hình cho host client
