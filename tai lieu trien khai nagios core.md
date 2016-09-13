@@ -103,32 +103,20 @@ service nagios start
 
 ![nagios](/images/nagios02.png)
 
-##2.2. Hướng dẫn cài đặt Nagios client sử dụng NRPE
+##2.2. Cài đặt Nagios Client ( sử dụng NRPE)
 
-####Trên Centos Client : 
-
+###2.2.1 Trên Centos Client 
+####2.2.1.1 Trên Centos 6.x
 **Bước 1** : Cài đăt gói EPEL :
-
-Centos 6.x : 
 
 ```sh
 wget http://epel.mirror.net.in/epel/6/i386/epel-release-6-8.noarch.rpm
 rpm -Uvh epel-release-6-8.noarch.rpm
 ```
-Centos 7 
-
-```sh
-yum install epel-release -y
-```
 **Bước 2** : Cài đặt **nrpe** và **nagios plugin**
 
 ```sh
 yum install nrpe nagios-plugins-all openssl
-```
-Với Ubuntu/Debian Client :
-
-```sh
-apt-get install nagios-nrpe-server nagios-plugins -y
 ```
 **Bước 3** : Chỉnh sửa file cấu hình NRPE và khởi động 
 ```sh
@@ -139,22 +127,61 @@ Tìm và chỉnh sửa như sau :
 ```sh
 allowed_hosts=127.0.0.1, 172.16.69.221
 ```
-*Chú ý :  Thay IP 172.16.69.221 với Nagios server IP của bạn 
+**Chú ý** :  Thay IP 172.16.69.221 với Nagios server IP của bạn 
 
-Khởi động Nagios NRPE
+**Bước 4** : Khởi động Nagios NRPE
 
-Centos 6.x
 ```sh
 service nrpe start
 chkconfig nrpe on
 ```
-Centos 7
+
+####2.2.1.2 TrênCentos 7 
+
+**Bước 1** : Cài đăt gói EPEL :
+
+```sh
+yum install epel-release -y
+```
+**Bước 2** : Cài đặt **nrpe** và **nagios plugin**
+
+```sh
+yum install nrpe nagios-plugins-all openssl
+```
+**Bước 3** : Chỉnh sửa file cấu hình NRPE và khởi động 
+```sh
+vi /etc/nagios/nrpe.cfg
+```
+Tìm và chỉnh sửa như sau :
+
+```sh
+allowed_hosts=127.0.0.1, 172.16.69.221
+```
+
+**Bước 4** : Khởi động Nagios NRPE
 
 ```sh
 systemctl start nrpe
 chkconfig nrpe on
 ```
-Debian/Ubuntu
+
+###2.2.2 Trên Ubuntu/Debian Client :
+
+**Bước 1** : Cài đặt **nrpe** và **nagios plugin**
+
+```sh
+apt-get install nagios-nrpe-server nagios-plugins -y
+```
+**Bước 2** : Chỉnh sửa file cấu hình NRPE và khởi động 
+```sh
+vi /etc/nagios/nrpe.cfg
+```
+Tìm và chỉnh sửa như sau :
+
+```sh
+allowed_hosts=127.0.0.1, 172.16.69.221
+```
+**Bước 4** : Khởi động Nagios NRPE
 
 ```sh
 /etc/init.d/nagios-nrpe-server restart
