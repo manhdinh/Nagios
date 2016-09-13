@@ -261,4 +261,9 @@ define service {
         }
 ```
 
+Restart service và vào giao diện Web kiểm tra
+
+```sh
+systemctl restart nagios
+```
 ![nagios](/images/nagios04.png)
