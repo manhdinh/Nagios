@@ -64,7 +64,7 @@ tar zxf nagios-4.1.1.tar.gz
 tar zxf nagios-plugins-2.1.1.tar.gz
 cd nagios-4.1.1
 ```
-Compile các gói Nagios vừa được giải nén 
+Cài đặt Nagios Core
 
 ```sh
 ./configure --with-command-group=nagcmd
@@ -80,7 +80,7 @@ Tạo password cho nagiosadmin
 ```sh
 htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
 ```
-Cài đặt Nagios Server
+Cài đặt Nagios Plugin
 
 ```sh
 cd /tmp/nagios-plugins-2.1.1
@@ -103,9 +103,116 @@ service nagios start
 
 ![nagios](/images/nagios02.png)
 
-##2.2. Cài đặt Nagios Client ( sử dụng NRPE)
+####2.1.2 Cài đặt Nagios Secondary
 
-###2.2.1 Trên Centos Client 
+**Bước 1** : Tắt Selinux
+
+```sh
+setenforce 0
+```
+Sửa file `/etc/selinux/config` và chuyển `enforcing` thành `disabled`
+
+**Bước 2** : Cài đặt các gói điều kiện
+Cài các gói cần thiết :
+```sh
+yum install httpd php php-cli gcc glibc glibc-common gd gd-devel net-snmp openssl-devel wget unzip -y
+```
+Tạo user, group cho Nagios và phân quyền
+
+```sh
+useradd nagios
+groupadd nagcmd
+usermod -a -G nagcmd nagios
+usermod -a -G nagcmd apache
+```
+**Bước 3** : Dowload và cài đặt Nagios
+
+Dowload và giải nén các gói Nagios
+
+```sh
+cd /tmp
+wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.1.1.tar.gz
+wget http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz
+tar zxf nagios-4.1.1.tar.gz
+tar zxf nagios-plugins-2.1.1.tar.gz
+cd nagios-4.1.1
+```
+Cài đặt Nagios Core
+
+```sh
+./configure --with-command-group=nagcmd
+make all
+make install
+make install-init
+make install-config
+make install-commandmode
+make install-webconf
+```
+
+Cài đặt Nagios Plugin
+
+```sh
+cd /tmp/nagios-plugins-2.1.1
+./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl
+make all
+make install
+```
+Tạo rule firewall cho port http 
+
+```sh
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --reload
+```
+Khởi động http 
+
+```sh
+service httpd start
+```
+
+####2.1.3 Cài đặt Rsync
+####2.1.3.1 Trên Nagios Server
+
+```sh
+yum install rsync -y
+```
+####2.1.3.2 Trên Nagios Backup
+```sh
+yum install rsync -y
+```
+Tạo script backup cho Nagios Server
+```sh
+# vi /opt/back_up_nagios.sh
+```
+Copy các dòng sau vào file 
+
+```sh
+!/bin/bash
+{
+echo -e "\nDIR: /usr/local/nagios"
+/usr/bin/rsync -Hxva --delete --progress --exclude="perl" --exclude="share" --exclude="var" 10.1.1.219:/usr/local/nagios/ /usr/local/nagios/
+}
+```
+Lưu file và thoát
+
+Phân quyền cho file script
+```sh
+chmod +x /opt/back_up_nagios.sh
+```
+Tạo crontab
+```sh
+#crontab -e
+	0 1 * * * sh /opt/back_up_nagios.sh >/dev/null
+```
+Lưu và thoát
+
+Backup thử dữ liệu từ Nagios Server 
+```sh
+bash /opt/back_up_nagios.sh
+```
+
+###2.2. Cài đặt Nagios Client ( sử dụng NRPE)
+
+####2.2.1 Trên Centos Client 
 ####2.2.1.1 Trên Centos 6.x
 **Bước 1** : Cài đăt gói EPEL :
 
@@ -127,6 +234,8 @@ Tìm và chỉnh sửa như sau :
 ```sh
 allowed_hosts=127.0.0.1, 172.16.69.221
 ```
+Lưu file và thoát
+
 **Chú ý** :  Thay IP 172.16.69.221 với Nagios server IP của bạn 
 
 **Bước 4** : Khởi động Nagios NRPE
@@ -157,6 +266,8 @@ Tìm và chỉnh sửa như sau :
 ```sh
 allowed_hosts=127.0.0.1, 172.16.69.221
 ```
+Lưu file và thoát
+
 **Chú ý** :  Thay IP 172.16.69.221 với Nagios server IP của bạn 
 
 **Bước 4** : Khởi động Nagios NRPE
@@ -182,6 +293,8 @@ Tìm và chỉnh sửa như sau :
 ```sh
 allowed_hosts=127.0.0.1, 172.16.69.221
 ```
+Lưu file và thoát
+
 **Chú ý** :  Thay IP 172.16.69.221 với Nagios server IP của bạn 
 
 **Bước 4** : Khởi động Nagios NRPE
@@ -205,6 +318,8 @@ Tìm và bỏ dấu "#" ở trước dòng sau :
 ```sh
 cfg_dir=/usr/local/nagios/etc/servers
 ```
+Lưu file và thoát
+
 Tạo thư mục chứa các file cấu hình và tạo file cấu hình cho client, ví dụ ở đây client có hostname là zabbix : 
 
 ```sh
@@ -216,20 +331,24 @@ vi /usr/local/nagios/etc/servers/zabbix.cfg
 ```sh
 define host{
 use                             linux-server
-host_name                       zabbix			#hostname của host client
-alias                           zabbix			#bí danh của host client
-address                         172.16.69.221	#IP của host client
+host_name                       zabbix			#hostname host client
+alias                           zabbix			#bi danh của host client
+address                         172.16.69.230	#IP  host client
 max_check_attempts              5
 check_period                    24x7
 notification_interval           30
 notification_period             24x7
 }
 ```
+Lưu file và thoát
+
 Restart service và vào giao diện Web kiểm tra
 ```sh
 systemctl restart nagios
 ```
 ![nagios](/images/nagios03.png)
+
+###3.2 Cấu hình cho các thông số phần cứng
 
 ###3.2 Cấu hình cho service SSH 
 ```sh
@@ -239,7 +358,7 @@ define host{
 		use                             linux-server
 		host_name                       zabbix			#hostname của host client
 		alias                           zabbix			#bí danh của host client
-		address                         192.168.1.152	#IP của host client
+		address                         172.16.69.230	#IP của host client
 		max_check_attempts              5
 		check_period                    24x7
 		notification_interval           30
@@ -260,6 +379,7 @@ define service {
         notifications_enabled           0
         }
 ```
+Lưu file và thoát
 
 Restart service và vào giao diện Web kiểm tra
 
