@@ -5,28 +5,23 @@
 	*	[1 Chuẩn bị] (#cbi)
 		*	[1.1 Mô hình mạng]	(#mhm)	
 		*	[1.2 Danh sách server]	(#ds)	
-		*	[1.3 Cấu hình phần cứng yêu cầu]	(#chpc)
-		
+		*	[1.3 Cấu hình phần cứng yêu cầu]	(#chpc)		
 	*	[2 Cài đặt Nagios] (#cdnagios)
 			*	[2.1 Cài đặt phía Server]	(#cdsrv)	
 				*	[2.1.1 Cài đặt Nagios Primary]	(#cdpri)	
-				*	[2.1.2 Cài đặt Nagios Secondary] (#cdse)	
-				
+				*	[2.1.2 Cài đặt Nagios Secondary] (#cdse)					
 			*	[2.2 Cài đặt Rsync]	(#cdrsync)	
 				*	[2.2.1 Trên Nagios Server] (#trensrv)	
-				*	[2.2.2 Trên Nagios Backup] (#trenbka)	
-				
+				*	[2.2.2 Trên Nagios Backup] (#trenbka)					
 			*	[2.3 Cài đặt Nagios Client]	(#cdclient)	
 				*	[2.3.1 Trên Centos Client] (#trence)	
 					*	[2.3.1.1 Trên Centos 6.x] (#cent6)	
-					*	[2.3.1.2 TrênCentos 7 ] (#cent7)	
-					
+					*	[2.3.1.2 TrênCentos 7 ] (#cent7)						
 				*	[2.3.2 Trên Ubuntu/Debian Client ] (#ubuntu)	
 	*	[3 Cấu hình cho host client] (#chclient)
 		*	[3.1 Tạo cấu hình cho host client]	(#taoch)	
 		*	[3.2 Cấu hình cho các thông số phần cứng]	(#chtspc)	
-		*	[3.3 Cấu hình cho service SSH ]	(#chssh)	
-		
+		*	[3.3 Cấu hình cho service SSH ]	(#chssh)			
 	*	[4 Cấu hình gửi mail cảnh báo cho Nagios] (#chmail)
 
 #I.	Mô hình Logical
