@@ -387,3 +387,58 @@ Restart service và vào giao diện Web kiểm tra
 systemctl restart nagios
 ```
 ![nagios](/images/nagios04.png)
+##4. Cấu hình gửi mail cảnh báo cho Nagios
+**Chú ý** : Làm trên cả Nagios Server và Nagios Backup
+
+**Bước 1** : Cài đặt mail postfix
+```sh
+yum -y install postfix cyrus-sasl-plain mailx
+```
+Khởi động lại postfix để nhận SASL framework và cho phép postfix khởi động cùng hệ thống :
+
+```sh
+systemctl restart postfix
+systemctl enable postfix
+```
+Mở file cấu hình `/etc/postfix/main.cf` và thêm các dòng sau 
+```sh
+relayhost = [smtp.gmail.com]:587
+smtp_use_tls = yes
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_tls_CAfile = /etc/ssl/certs/ca-bundle.crt
+smtp_sasl_security_options = noanonymous
+smtp_sasl_tls_security_options = noanonymous
+```
+Lưu file và thoát
+
+Tạo 1 file `/etc/postfix/sasl_passwd` và thêm các thông số :
+```sh
+vi /etc/postfix/sasl_passwd
+	 [smtp.gmail.com]:587 username:password
+```
+Thay `username:password` với email và password của bạn
+
+Phân quyền cho thư mục 
+```sh
+chown root:postfix /etc/postfix/sasl_passwd*
+chmod 640 /etc/postfix/sasl_passwd*
+systemctl reload postfix
+```
+Gửi mail test 
+```sh
+echo "This is a test." | mail -s "test message" manhdinh@gmail.com
+```
+Kiểm tra hòm thư của bạn.
+
+**Bước 2** : Cấu hình trên Nagios Core để gửi mail notify
+Mở file `/usr/local/nagios/etc/objects/contacts.cfg` và thay thế email của bạn
+![nagios](/images/nagios07.png)
+
+**Bước 3** : Mở file cấu hình của host client và thêm contact 
+![nagios](/images/nagios08.png)
+
+Restart service nagios
+```sh
+systemctl restart nagios
+```
