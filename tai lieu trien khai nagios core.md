@@ -181,7 +181,7 @@ yum install rsync -y
 ```
 Tạo script backup cho Nagios Server
 ```sh
-# vi /opt/back_up_nagios.sh
+vi /opt/back_up_nagios.sh
 ```
 Copy các dòng sau vào file 
 
@@ -200,7 +200,7 @@ chmod +x /opt/back_up_nagios.sh
 ```
 Tạo crontab
 ```sh
-#crontab -e
+crontab -e
 	0 1 * * * sh /opt/back_up_nagios.sh >/dev/null
 ```
 Lưu và thoát
