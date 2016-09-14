@@ -1,4 +1,32 @@
+##Mục lục
+
+*	[I.	Mô hình Logical](#mh)
+*	[II. Triển khai Nagios ] (tk)
+	*	[1 Chuẩn bị] (#cbi)
+		*	[1.1 Mô hình mạng]	(#mhm)	
+		*	[1.2 Danh sách server]	(#ds)	
+		*	[1.3 Cấu hình phần cứng yêu cầu]	(#chpc)
+	*	[2 Cài đặt Nagios] (#cdnagios)
+			*	[2.1 Cài đặt phía Server]	(#cdsrv)	
+				*	[2.1.1 Cài đặt Nagios Primary]	(#cdpri)	
+				*	[2.1.2 Cài đặt Nagios Secondary] (#cdse)	
+			*	[2.2 Cài đặt Rsync]	(#cdrsync)	
+				*	[2.2.1 Trên Nagios Server] (#trensrv)	
+				*	[2.2.2 Trên Nagios Backup] (#trenbka)	
+			*	[2.3 Cài đặt Nagios Client]	(#cdclient)	
+				*	[2.3.1 Trên Centos Client] (#trence)	
+					*	[2.3.1.1 Trên Centos 6.x] (#cent6)	
+					*	[2.3.1.2 TrênCentos 7 ] (#cent7)	
+				*	[2.3.2 Trên Ubuntu/Debian Client ] (#ubuntu)	
+	*	[3 Cấu hình cho host client] (#chclient)
+		*	[3.1 Tạo cấu hình cho host client]	(#taoch)	
+		*	[3.2 Cấu hình cho các thông số phần cứng]	(#chtspc)	
+		*	[3.3 Cấu hình cho service SSH ]	(#chssh)	
+	*	[4 Cấu hình gửi mail cảnh báo cho Nagios] (#chmail)
+
 #I.	Mô hình Logical
+<a name="mh"> </a> 
+
 Mô hình triển khai Nagios Core High Avaibility
 ![nagios](/images/nagios01.png)
 
@@ -9,11 +37,18 @@ kỹ thuật Rsync, cung cấp cơ chế làm việc giữa máy Primary và Sec
  việc monitor hệ thống sẽ không bị gián đoạn quá lâu. 
  
 #II. Triển khai Nagios 
+<a name="tk"> </a> 
+
 ##1 Chuẩn bị
+<a name="cbi"> </a> 
+
 ###1.1 Mô hình mạng
+<a name="mhm"> </a> 
+
 ![nagios](/images/nagios06.png)
 
 ###1.2 Danh sách server
+<a name="ds"> </a> 
 
 |STT|Tên|IP|OS|
 |-------|---------------|--------------|---------|
@@ -21,6 +56,7 @@ kỹ thuật Rsync, cung cấp cơ chế làm việc giữa máy Primary và Sec
 |2|Nagios-backup|172.16.69.223|Centos 7|
 
 ###1.3 Cấu hình phần cứng yêu cầu
+<a name="chpc"> </a> 
 
 |Số lượng host giám sát|Số lượng service giám sát|RAM|CPU|Disk|
 |----------------------|-------------------------|---|---|----|
@@ -28,9 +64,14 @@ kỹ thuật Rsync, cung cấp cơ chế làm việc giữa máy Primary và Sec
 |100|500|4-8GB|2-4 Core|80GB|
 |>500|2500|>8GB|>4 Core|120GB|
 
-##2. Cài đặt Nagios
+##2 Cài đặt Nagios
+<a name="cdnagios"> </a> 
+
 ###2.1 Cài đặt phía Server
+<a name="cdsrv"> </a> 
+
 ####2.1.1 Cài đặt Nagios Primary
+<a name="cdpri"> </a> 
 
 **Bước 1** : Tắt Selinux
 
@@ -104,6 +145,7 @@ service nagios start
 ![nagios](/images/nagios02.png)
 
 ####2.1.2 Cài đặt Nagios Secondary
+<a name="cdse"> </a> 
 
 **Bước 1** : Tắt Selinux
 
@@ -169,13 +211,18 @@ Khởi động http
 service httpd start
 ```
 
-####2.1.3 Cài đặt Rsync
-####2.1.3.1 Trên Nagios Server
+###2.2 Cài đặt Rsync
+<a name="cdrsync"> </a> 
+
+####2.2.1 Trên Nagios Server
+<a name="trensrv"> </a> 
 
 ```sh
 yum install rsync -y
 ```
-####2.1.3.2 Trên Nagios Backup
+####2.2.2 Trên Nagios Backup
+<a name="trenbka"> </a> 
+
 ```sh
 yum install rsync -y
 ```
@@ -210,10 +257,15 @@ Backup thử dữ liệu từ Nagios Server
 bash /opt/back_up_nagios.sh
 ```
 
-###2.2. Cài đặt Nagios Client ( sử dụng NRPE)
+###2.3 Cài đặt Nagios Client ( sử dụng NRPE)
+<a name="cdclient"> </a> 
 
-####2.2.1 Trên Centos Client 
-####2.2.1.1 Trên Centos 6.x
+####2.3.1 Trên Centos Client 
+<a name="trence"> </a> 
+
+####2.3.1.1 Trên Centos 6.x
+<a name="cent6"> </a> 
+
 **Bước 1** : Cài đăt gói EPEL :
 
 ```sh
@@ -245,7 +297,8 @@ service nrpe start
 chkconfig nrpe on
 ```
 
-####2.2.1.2 TrênCentos 7 
+####2.3.1.2 TrênCentos 7 
+<a name="cent7"> </a> 
 
 **Bước 1** : Cài đăt gói EPEL :
 
@@ -277,7 +330,8 @@ systemctl start nrpe
 chkconfig nrpe on
 ```
 
-###2.2.2 Trên Ubuntu/Debian Client :
+###2.3.2 Trên Ubuntu/Debian Client :
+<a name="ubuntu"> </a> 
 
 **Bước 1** : Cài đặt **nrpe** và **nagios plugin**
 
@@ -306,7 +360,10 @@ Lưu file và thoát
 **Chú ý** : Sau khi cài đặt xong tại phía client, quay lại Nagios-Server và tiếp tục mục **3** để tạo file cấu hình cho các host client vừa thêm.
 
 ##3 Cấu hình cho host client
+<a name="chclient"> </a> 
+
 ###3.1 Tạo cấu hình cho host client
+<a name="taoch"> </a> 
 
 Chỉnh file cấu hình của Nagios, đặt tất cả các file cấu hình của host client là server vào cùng 1 thư mục :
 
@@ -349,8 +406,11 @@ systemctl restart nagios
 ![nagios](/images/nagios03.png)
 
 ###3.2 Cấu hình cho các thông số phần cứng
+<a name="chtspc"> </a> 
 
-###3.2 Cấu hình cho service SSH 
+###3.3 Cấu hình cho service SSH 
+<a name="chssh"> </a> 
+
 ```sh
 vi /usr/local/nagios/etc/servers/zabbix.cfg
 
@@ -388,6 +448,8 @@ systemctl restart nagios
 ```
 ![nagios](/images/nagios04.png)
 ##4. Cấu hình gửi mail cảnh báo cho Nagios
+<a name="chmail"> </a> 
+
 **Chú ý** : Làm trên cả Nagios Server và Nagios Backup
 
 **Bước 1** : Cài đặt mail postfix
