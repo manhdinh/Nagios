@@ -189,7 +189,7 @@ Copy các dòng sau vào file
 !/bin/bash
 {
 echo -e "\nDIR: /usr/local/nagios"
-/usr/bin/rsync -Hxva --delete --progress --exclude="perl" --exclude="share" --exclude="var" 10.1.1.219:/usr/local/nagios/ /usr/local/nagios/
+/usr/bin/rsync -Hxva --delete --progress --exclude="perl" --exclude="share" --exclude="var" 172.16.69.221:/usr/local/nagios/ /usr/local/nagios/
 }
 ```
 Lưu file và thoát
