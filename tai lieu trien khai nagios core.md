@@ -442,3 +442,7 @@ Restart service nagios
 ```sh
 systemctl restart nagios
 ```
+**Bước 4** : Kiểm tra
+Tắt thử host client, Nagios server sẽ gửi mail thông báo
+![nagios](/images/nagios09.png)
+![nagios](/images/nagios10.png)
