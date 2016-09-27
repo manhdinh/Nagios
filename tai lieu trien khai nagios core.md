@@ -137,8 +137,8 @@ firewall-cmd --reload
 ```
 Khởi động Nagios Server
 ```
-systemclt start httpd
-systemclt start nagios
+systemctl start httpd
+systemctl start nagios
 ```
 Đăng nhập vào giao diện web interface của Nagios : http://ip_nagioserver/nagios/, nhập username : nagiosadmin và password
 
@@ -208,7 +208,7 @@ firewall-cmd --reload
 Khởi động http 
 
 ```sh
-systemclt start httpd
+systemctl start httpd
 ```
 
 ###2.2 Cài đặt Rsync
