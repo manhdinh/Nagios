@@ -489,8 +489,9 @@ vi /etc/postfix/sasl_passwd
 ```
 Thay `username:password` với email và password của bạn
 
-Phân quyền cho thư mục 
+Cấu hình và phân quyền cho thư mục 
 ```sh
+postmap /etc/postfix/sasl_passwd
 chown root:postfix /etc/postfix/sasl_passwd*
 chmod 640 /etc/postfix/sasl_passwd*
 systemctl reload postfix
