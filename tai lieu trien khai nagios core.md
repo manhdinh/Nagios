@@ -137,8 +137,8 @@ firewall-cmd --reload
 ```
 Khởi động Nagios Server
 ```
-service httpd start
-service nagios start
+systemclt start httpd
+systemclt start nagios
 ```
 Đăng nhập vào giao diện web interface của Nagios : http://ip_nagioserver/nagios/, nhập username : nagiosadmin và password
 
