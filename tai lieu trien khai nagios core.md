@@ -216,6 +216,13 @@ systemctl start httpd
 
 ####2.2.1 Trên Nagios Server
 <a name="trensrv"> </a> 
+Tạo key SSH giữa Nagios Server và Nagios Backup
+```sh
+ssh-keygen -t rsa
+cd /root/.ssh/
+ssh-copy-id root@172.16.69.223
+cp id_rsa.pub authorized_keys
+scp /root/.ssh/* root@172.16.69.223:/root/.ssh/
 
 ```sh
 yum install rsync -y
