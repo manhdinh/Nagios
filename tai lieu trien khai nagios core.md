@@ -208,7 +208,7 @@ firewall-cmd --reload
 Khởi động http 
 
 ```sh
-service httpd start
+systemclt start httpd
 ```
 
 ###2.2 Cài đặt Rsync
