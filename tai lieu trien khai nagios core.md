@@ -241,7 +241,7 @@ vi /opt/back_up_nagios.sh
 Copy các dòng sau vào file 
 
 ```sh
-!/bin/bash
+#!/bin/bash
 {
 echo -e "\nDIR: /usr/local/nagios"
 /usr/bin/rsync -Hxva --delete --progress --exclude="perl" --exclude="share" --exclude="var" 172.16.69.221:/usr/local/nagios/ /usr/local/nagios/
