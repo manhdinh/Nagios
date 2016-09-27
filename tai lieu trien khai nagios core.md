@@ -223,7 +223,8 @@ cd /root/.ssh/
 ssh-copy-id root@172.16.69.223
 cp id_rsa.pub authorized_keys
 scp /root/.ssh/* root@172.16.69.223:/root/.ssh/
-
+```
+Cài đặt Rsync
 ```sh
 yum install rsync -y
 ```
